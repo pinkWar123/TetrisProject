@@ -1,21 +1,20 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-
+#include"Color.h"
 class Block
 {
 private:
 	sf::Vector2i position;
-	unsigned char color;
+	Color color;
 public:
 	Block();
-	Block(sf::Vector2i position, unsigned char color);
-	Block(unsigned char color);
+	Block(sf::Vector2i position, Color color);
+	Block(Color color);
 
 	sf::Vector2i getPosition() const;
-	unsigned char getColor() const;
+	Color getColor() const;
 
 	void setPosition(sf::Vector2i position);
-	void setColor(unsigned char color);
+	void setColor(Color color);
 };
-
