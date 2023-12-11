@@ -1,24 +1,4 @@
-﻿//#include "Game.h"
-//
-//Game::Game()
-//{
-//
-//}
-//
-//Game::~Game()
-//{
-//
-//}
-//
-//void Game::Draw(sf::RenderWindow* window)
-//{
-//	Board::getInstance().Draw(window);
-//}
-//
-//void Game::Update(sf::RenderWindow* window, sf::Event ev)
-//{
-//
-//}
+﻿
 
 #include "Game.h"
 std::vector<sf::Color> Color1 = { sf::Color::Black,
@@ -44,20 +24,38 @@ void SetGrid(std::vector<std::vector<unsigned char>>& grid, int Width, int Heigh
 Game::Game()
 {
     SetGrid(Grid, Width, Height);
+    rectangle = sf::RectangleShape(sf::Vector2f(CellSize * Width, CellSize * Height));
+    rectangle.setPosition(offset);
+    rectangle.setOutlineColor(sf::Color::Red);
+    rectangle.setOutlineThickness(6);
+    rectangle.setFillColor(sf::Color::Black);
     TotalScore = 0;
 }
-void Game::RenderOnScreen()
+
+void Game::drawGameBoard(sf::RenderWindow* window)
 {
+    sf::RectangleShape rectangle(sf::Vector2f(CellSize * Width, CellSize * Height));
+    rectangle.setPosition(offset);
+    rectangle.setOutlineColor(sf::Color::Red);
+    //rectangle.setOutlineThickness(5.f);
+    rectangle.setFillColor(sf::Color::Black);
+    window->draw(rectangle);
+}
+
+void Game::Draw(sf::RenderWindow* window)
+{
+    //drawGameBoard(window);
+    window->draw(rectangle);
     sf::RectangleShape cell(sf::Vector2f(CellSize - 2, CellSize - 2));
     for (int i = 0; i < Width; i++)
     {
         for (int j = 0; j < Height; j++)
         {
             if(Grid[i][j] == '0') 
-                cell.setPosition(sf::Vector2f(CellSize * i, CellSize * j + timeToUpdate.asSeconds() / 0.25 * j));
-            else cell.setPosition(sf::Vector2f(CellSize * i, CellSize * j));
+                cell.setPosition(sf::Vector2f(CellSize * i + offset.x, CellSize * j  + offset.y));
+            else cell.setPosition(sf::Vector2f(CellSize * i + offset.x, CellSize * j + offset.y));
             cell.setFillColor(Color1[Grid[i][j] - '0']);
-            window.draw(cell);
+            window->draw(cell);
         }
     }
 }
@@ -91,22 +89,27 @@ void Game::HandleFullCollum()
         }
     }
 }
-void Game::PlayGame()
+
+void Game::Update(sf::RenderWindow* window, sf::Event ev) {}
+
+void Game::Update(sf::RenderWindow* window)
 {
-    window.create(sf::VideoMode(ScreenWidth, ScreenHeight), "Tetris game", sf::Style::Titlebar | sf::Style::Close);
+    //window.create(sf::VideoMode(ScreenWidth, ScreenHeight), "Tetris game", sf::Style::Titlebar | sf::Style::Close);
 
     sf::Clock clock;
-    sf::Time maxFrameTime = sf::seconds(1.f/ FPS); // 7 FPS
+    sf::Time maxFrameTime = sf::seconds(1.f / FPS); // 7 FPS
     sf::Time deltaTime;
-    while (window.isOpen())
-    {
-        sf::Event event;
-        bool flag = true;
-        while (window.pollEvent(event))
+
+    sf::Event event;
+    bool flag = true;
+    while (window->isOpen()) {
+        while (window->pollEvent(event))
         {
+            std::cout << "New loop\n";
+            bool flag = true;
             if (event.type == sf::Event::Closed)
             {
-                window.close();
+                window->close();
             }
             if (event.type == sf::Event::KeyPressed)
             {
@@ -127,42 +130,50 @@ void Game::PlayGame()
                 }
                 if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
                 {
+                    for(int i= 0; i < 2; i++) terminos.Move_Down(Grid);
+                    flag = false;
+                }
+                if (event.key.code == sf::Keyboard::Space)
+                {
                     terminos.Drop(Grid);
                     flag = false;
                 }
             }
-        }
+           }
 
             deltaTime = clock.restart();
-        // Update here with deltaTime
-        /*if (flag)
-        {
-            terminos.Update(Grid);
+            // Update here with deltaTime
+            /*if (flag)
+            {
+                terminos.Update(Grid);
 
-        }*/
+            }*/
+
+            timeToUpdate += deltaTime;
+            if (flag && timeToUpdate.asSeconds() >= 0.25)
+            {
+                terminos.Update(Grid);
+                timeToUpdate = sf::Time::Zero;
+            }
+            HandleFullCollum();
+
+            // Handle full collum event
+
+
+
+            // Limit frame rate
+            if (deltaTime >= maxFrameTime)
+            {
+                deltaTime = maxFrameTime;
+            }
+
+            window->clear();
+            //RenderOnScreen();
+            Draw(window);
+            window->display();
+
+            sf::sleep(maxFrameTime - deltaTime);
         
-        timeToUpdate += deltaTime;
-        if (flag && timeToUpdate.asSeconds() >= 0.25)
-        {
-            terminos.Update(Grid);
-            timeToUpdate = sf::Time::Zero;
-        }
-        HandleFullCollum();
-
-        // Handle full collum event
-
-        
-
-        // Limit frame rate
-        if (deltaTime >= maxFrameTime)
-        {
-            deltaTime = maxFrameTime;
-        }
-        
-        window.clear();
-        RenderOnScreen();
-        window.display();
-
-        sf::sleep(maxFrameTime - deltaTime);
     }
 }
+//}

@@ -40,11 +40,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <chrono>
-#include "Terminos.h"
+//#include "Terminos.h"
+#include "Screen.h"
 
 // 0 = black, 1 = red, 2 = green, 3 = blue, 4 = yellow, 5 = dark blue,6 = pink, 7 = dark green
 
-class Game
+class Game : public IScreen
 {
 private:
     //-------------------------------------------------------------- Screen values --------------------------------
@@ -53,12 +54,13 @@ private:
     const int Height = 20;
     const int ScreenWidth = CellSize * Width;
     const int ScreenHeight = CellSize * Height;
+    const sf::Vector2f offset = sf::Vector2f(50, 0);
     //-- //----------------------------------------------------------------Manager values --------------------------------
     const float FPS = 120;
     sf::Time timeToUpdate;
-
+    sf::RectangleShape rectangle;
     int TotalScore;
-    sf::RenderWindow window;
+    //sf::RenderWindow window;
     std::vector<std::vector<unsigned char>> Grid;
     Terminos terminos;
 
@@ -68,5 +70,9 @@ private:
 public:
     Game();
     void PlayGame();
+    void drawGameBoard(sf::RenderWindow* window);
+    void Draw(sf::RenderWindow* window) override;
+    void Update(sf::RenderWindow* window, sf::Event ev) override;
+    void Update(sf::RenderWindow* window);
 };
 #endif
