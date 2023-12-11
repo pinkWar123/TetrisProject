@@ -2,25 +2,22 @@
 
 Block::Block()
 {
-
 }
 
-Block::Block(sf::Vector2i position, unsigned char color)
+Block::Block(sf::Vector2i position, Color color)
 	: position(position), color(color)
 {
-
 }
-Block::Block(unsigned char color)
+Block::Block(Color color)
 	: color(color)
 {
-
 }
 
 sf::Vector2i Block::getPosition() const
 {
 	return position;
 }
-unsigned char Block::getColor() const
+Color Block::getColor() const
 {
 	return color;
 }
@@ -29,7 +26,7 @@ void Block::setPosition(sf::Vector2i position)
 {
 	this->position = position;
 }
-void Block::setColor(unsigned char color)
+void Block::setColor(Color color)
 {
-	this -> color = color;
+	this->color = color;
 }

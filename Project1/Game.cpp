@@ -1,24 +1,40 @@
-﻿
-
 #include "Game.h"
-std::vector<sf::Color> Color1 = { sf::Color::Black,
-                                 sf::Color::Red,
-                                 sf::Color::Green,
-                                 sf::Color::Blue,
-                                 sf::Color::Yellow,
-                                 sf::Color::Cyan,
-                                 sf::Color::White,
-                                 sf::Color::Magenta };
-void SetGrid(std::vector<std::vector<unsigned char>>& grid, int Width, int Height)
+
+void SetGrid(std::vector<std::vector<Color>> &grid, int Width, int Height)
 {
     for (int i = 0; i < Width; i++)
     {
-        std::vector<unsigned char> temp;
+        std::vector<Color> temp;
         for (int j = 0; j < Height; j++)
         {
-            temp.push_back('0');
+            temp.push_back(Color::BLACK);
         }
         grid.push_back(temp);
+    }
+}
+void Game::RandomTerminos()
+{
+    for(int i = 0; i < NumberOfTerminos; i++)
+    {
+        TERMINOS type = Terminos::Randomize();
+        Terminos *ter;
+        
+        if(type == TERMINOS::I)
+            ter = static_cast<Terminos *>(new I_Terminos());
+        else if(type == TERMINOS::J)
+            ter = static_cast<Terminos *>(new J_Terminos());
+        else if(type == TERMINOS::L)
+            ter = static_cast<Terminos *>(new L_Terminos());
+        else if(type == TERMINOS::O)
+            ter = static_cast<Terminos*>(new O_Terminos());
+        else if(type == TERMINOS::S)
+            ter = static_cast<Terminos *>(new S_Terminos());
+        else if(type == TERMINOS::T)
+            ter = static_cast<Terminos *>(new T_Terminos());
+        else if(type == TERMINOS::Z)
+            ter = static_cast<Terminos*>(new Z_Terminos());
+        
+        terminos.push_back(ter);
     }
 }
 Game::Game()
@@ -30,6 +46,7 @@ Game::Game()
     rectangle.setOutlineThickness(6);
     rectangle.setFillColor(sf::Color::Black);
     TotalScore = 0;
+    RandomTerminos();
 }
 
 void Game::drawGameBoard(sf::RenderWindow* window)
@@ -51,11 +68,12 @@ void Game::Draw(sf::RenderWindow* window)
     {
         for (int j = 0; j < Height; j++)
         {
-            if(Grid[i][j] == '0') 
-                cell.setPosition(sf::Vector2f(CellSize * i + offset.x, CellSize * j  + offset.y));
-            else cell.setPosition(sf::Vector2f(CellSize * i + offset.x, CellSize * j + offset.y));
-            cell.setFillColor(Color1[Grid[i][j] - '0']);
-            window->draw(cell);
+            if (Grid[i][j] == Color::BLACK)
+                cell.setPosition(sf::Vector2f(CellSize * i, CellSize * j + timeToUpdate.asSeconds() / 0.25 * j));
+            else
+                cell.setPosition(sf::Vector2f(CellSize * i, CellSize * j));
+            cell.setFillColor(Color1[static_cast<std::size_t>(Grid[i][j])]);
+            window.draw(cell);
         }
     }
 }
@@ -66,7 +84,7 @@ void Game::HandleFullCollum()
         bool isFullRow = true;
         for (int x = 0; x < Width; ++x)
         {
-            if (Grid[x][y] == '0')
+            if (Grid[x][y] == Color::BLACK)
             {
                 isFullRow = false;
                 break;
@@ -115,17 +133,17 @@ void Game::Update(sf::RenderWindow* window)
             {
                 if (event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::Left)
                 {
-                    terminos.Move_Left(Grid);
+                    terminos[0]->Move_Left(Grid);
                     flag = false;
                 }
                 if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right)
                 {
-                    terminos.Move_Right(Grid);
+                    terminos[0]->Move_Right(Grid);
                     flag = false;
                 }
                 if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
                 {
-                    terminos.Rotate(Grid);
+                    terminos[0]->Rotate(Grid);
                     flag = false;
                 }
                 if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
