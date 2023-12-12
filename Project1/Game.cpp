@@ -259,7 +259,7 @@ void Game::Update(sf::RenderWindow* window)
 				if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
 				{
 					terminos[0]->Rotate(Grid);
-					SoundManager::getInstance().playSound(SoundEvent::MOVE);
+					SoundManager::getInstance().playSound(SoundEvent::ROTATE);
 					flag = false;
 				}
 				if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
