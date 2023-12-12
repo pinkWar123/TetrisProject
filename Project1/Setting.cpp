@@ -28,11 +28,13 @@ void Setting::Update(sf::RenderWindow* window)
 
 void Setting::loadWidgets()
 {
+	tgui::Theme::Ptr theme = tgui::Theme::create({ "kenney.txt" });
 	volume = tgui::Slider::create();
 	volume->setMinimum(100);
 	volume->setMaximum(200);
 	volume->setStep(5);
 	volume->setValue(135);
+	volume->setRenderer(theme->getRenderer("Slider"));
 
 	volume->onValueChange([](float value) {
 		std::cerr << "Slider value was changed to " << value << "\n";
@@ -45,6 +47,7 @@ void Setting::loadWidgets()
 	difficulty->setValue(15);
 	difficulty->setDecimalPlaces(1); // Display "15.0" instead of "15"
 	difficulty->setPosition(tgui::Layout2d(100, 200));
+	difficulty->setRenderer(theme->getRenderer("SpinControl"));
 	difficulty->onValueChange([](float value) {
 		std::cerr << "SpinControl value was changed to " << value << "\n";
 		});

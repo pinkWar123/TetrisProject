@@ -3,6 +3,7 @@
 #include "SearchBox.h"
 #include "Game.h"
 #include "Login.h"
+#include "Setting.h"
 #include "Favorite.h"
 #include "MainMenu.h"
 #include "StateManager.h"
@@ -15,8 +16,8 @@ private:
 	sf::RenderWindow* window;
 	MainMenu* mainMenu;
 	Login* login;
-	Favorite* favorite;
-	Game game;
+	Setting* setting;
+	std::shared_ptr<Game> game;
 
 	sf::Texture* texture;
 	sf::Sprite* sprite;

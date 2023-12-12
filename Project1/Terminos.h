@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Block.h"
 #include "Color.h"
+#include "StateManager.h"
 
 const int gridWidth = 12;
 const int gridHeight = 20;
@@ -31,6 +32,8 @@ private:
 public:
     Terminos();
     static TERMINOS Randomize();
+    Color GetColor();
+    std::vector<Block> GetMinos();
     void SetUpTerminos(std::vector<Block> &temp);
     void Drop(std::vector<std::vector<Color>> &grid);
     bool Move_Down(std::vector<std::vector<Color>> &grid);
@@ -39,3 +42,5 @@ public:
     bool Update(std::vector<std::vector<Color>> &grid);
     void Rotate(std::vector<std::vector<Color>> &grid);
 };
+
+

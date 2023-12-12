@@ -3,7 +3,9 @@
 enum class AppState {
 	LOGIN,
 	MAIN_MENU,
-    GAME
+    SETTINGS,
+    IN_GAME,
+    GAME_OVER
 };
 
 class StateManager {

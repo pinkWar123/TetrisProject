@@ -4,6 +4,7 @@
 #include <TGUI/TGUI.hpp>
 
 #include "Screen.h"
+#include "UserManager.h"
 #include "json.hpp"
 #include <fstream>
 
@@ -15,21 +16,20 @@ private:
 	tgui::EditBox::Ptr userNameBox;
 	tgui::EditBox::Ptr passWordBox;
 	tgui::Button::Ptr signUpButton;
-	tgui::Group::Ptr widgets;
+	//tgui::Group::Ptr widgets;
 	static std::string userName;
 	static std::string passWord;
 	static int userIndex;
 	
-	void updateTextSize(tgui::BackendGui& gui);
+	void updateTextSize();
 	
 	void CreateNewAccount();
 public:
+	Login();
+	Login(sf::RenderWindow* window);
 	tgui::Button::Ptr loginButton;
-	void Draw(sf::RenderWindow* window);
-	void Update(sf::RenderWindow* window, sf::Event ev);
-	virtual void Execute(sf::RenderWindow* window, sf::Event ev);
-	void Load(tgui::Gui& gui);
-
+	void Update(sf::RenderWindow* window) override;
+	void loadWidgets() override;
 	void SignIn();
 	bool isValidated();
 	

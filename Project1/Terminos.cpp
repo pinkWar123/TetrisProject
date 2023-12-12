@@ -4,9 +4,9 @@ Terminos::Terminos()
 {
 }
 
-static TERMINOS Randomize()
+TERMINOS Terminos::Randomize()
 {
-    std::srand(static_cast<unsigned int>(std::time(0)));
+    //std::srand(static_cast<unsigned int>(std::time(0)));
 
     int randomNumber = std::rand() % 7;
 
@@ -31,108 +31,18 @@ static TERMINOS Randomize()
         std::exit(EXIT_FAILURE);
     }
 }
-
+Color Terminos::GetColor()
+{
+    return minos[0].getColor();
+}
+std::vector<Block> Terminos::GetMinos()
+{
+    return minos;
+}
 void Terminos::SetUpTerminos(std::vector<Block> &temp)
 {
     minos = temp;
 }
-// void Terminos::SetUpTerminos(int type)
-// {
-//     if (type == 0)
-//     {
-//         // square terminos - red
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('1');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(6, 0));
-//         minos[1].setPosition(sf::Vector2i(7, 0));
-//         minos[2].setPosition(sf::Vector2i(6, -1));
-//         minos[3].setPosition(sf::Vector2i(7, -1));
-//     }
-//     else if (type == 1)
-//     {
-//         // I terminos - greens
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('2');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(6, 0));
-//         minos[1].setPosition(sf::Vector2i(6, -1));
-//         minos[2].setPosition(sf::Vector2i(6, -2));
-//         minos[3].setPosition(sf::Vector2i(6, -3));
-//     }
-//     // J
-//     else if (type == 2)
-//     {
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('3');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(6, 0));
-//         minos[1].setPosition(sf::Vector2i(7, 0));
-//         minos[2].setPosition(sf::Vector2i(7, -1));
-//         minos[3].setPosition(sf::Vector2i(7, -2));
-//     }
-//     else if (type == 3)
-//     {
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('4');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(7, 0));
-//         minos[1].setPosition(sf::Vector2i(6, 0));
-//         minos[2].setPosition(sf::Vector2i(6, -1));
-//         minos[3].setPosition(sf::Vector2i(6, -2));
-//     }
-//     else if (type == 4)
-//     {
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('5');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(6, 0));
-//         minos[1].setPosition(sf::Vector2i(7, 0));
-//         minos[2].setPosition(sf::Vector2i(7, -1));
-//         minos[3].setPosition(sf::Vector2i(8, -1));
-//     }
-//     else if (type == 5)
-//     {
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('6');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(6, 0));
-//         minos[1].setPosition(sf::Vector2i(6, -1));
-//         minos[2].setPosition(sf::Vector2i(5, -1));
-//         minos[3].setPosition(sf::Vector2i(7, -1));
-//     }
-//     else if (type == 6)
-//     {
-//         for (int i = 0; i < 4; i++)
-//         {
-//             Block temp('7');
-//             minos.push_back(temp);
-//         }
-
-//         minos[0].setPosition(sf::Vector2i(6, 0));
-//         minos[1].setPosition(sf::Vector2i(7, 0));
-//         minos[2].setPosition(sf::Vector2i(6, -1));
-//         minos[3].setPosition(sf::Vector2i(5, -1));
-//     }
-// }
 
 bool check(std::vector<Block> &minos, sf::Vector2i pos)
 {
@@ -181,6 +91,7 @@ bool Terminos::Move_Down(std::vector<std::vector<Color>> &grid)
 
 bool Terminos::Update(std::vector<std::vector<Color>> &grid)
 {
+    if (StateManager::getInstance().getState() == AppState::GAME_OVER) return false;
     bool canMoveDown = Move_Down(grid);
     return canMoveDown;
 }

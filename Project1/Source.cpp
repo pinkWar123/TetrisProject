@@ -9,7 +9,10 @@ tgui::Gui Program::gui;
 
 int main()
 {
+	std::srand(static_cast<unsigned int>(std::time(0)));
+
 	Program* program = new Program();
 	program->Run();
 	return 0;
 }
+

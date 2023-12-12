@@ -21,3 +21,4 @@ enum class Color
     WHITE,
     MAGENTA
 };
+
