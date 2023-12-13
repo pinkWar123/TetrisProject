@@ -1,0 +1,188 @@
+Button {
+	Texture         = ${blue_button00:10};
+	TextureHover    = ${blue_button01:10};
+	TextureDown     = ${blue_button03:10};
+	TextureFocused  = ${blue_button01:10};
+	TextureDisabled = ${grey_button05:10};
+	TextColor       = rgb(250, 250, 250);
+	TextColorDisabled = rgb(100, 100, 100);
+}
+
+ChatBox {
+	TextureBackground = ${blue_button05:10};
+	Scrollbar         = &Scrollbar;
+	Padding           = (3, 3, 3, 3);
+}
+
+Checkbox {
+	TextureUnchecked        = ${grey_box};
+	TextureChecked          = ${blue_boxCheckmark};
+	TextColor               = rgb(100, 100, 100);
+	TextColorHover          = Black;
+}
+
+ChildWindow {
+	TextureTitlebar        = ${blue_button05:10o-10};
+	TitleColor             = White;
+	TextureBackground      = ${grey_panel:10o+10};
+	BorderColor            = Black;
+	DistanceToSide         = 5;
+	PaddingBetweenButtons  = 2;
+	ShowTextOnTitleButtons = false;
+	CloseButton = {
+		Texture       = ${red_cross};
+	};
+}
+
+ComboBox {
+	TextureBackground     = ${blue_button00:10};
+	TextureArrow          = ${grey_arrowDownGrey};
+	TextureArrowHover     = ${grey_arrowDownWhite};
+	TextColor             = rgb(190, 190, 190);
+	Padding               = (3, 3, 3, 3);
+	ListBox               = &ListBox;
+}
+
+EditBox {
+	Texture        = ${grey_button06:10};
+	TextureHover   = ${grey_button05:10};
+	TextureFocused = ${grey_button05:10};
+
+	TextColor                   = rgb(100, 100, 100);
+	SelectedTextColor           = White;
+	SelectedTextBackgroundColor = rgb( 10, 110, 255);
+	DefaultTextColor            = rgb(120, 120, 120);
+	CaretColor                  = rgb(110, 110, 255);
+	Padding                     = (6, 4, 6, 4);
+}
+
+Label {
+	TextColor = rgb(190, 190, 190);
+	Scrollbar = &Scrollbar;
+}
+
+ListBox {
+	TextureBackground = ${grey_panel:10};
+
+	TextColor                    = rgb(100, 100, 100);
+	TextColorHover               = rgb(250, 250, 250);
+	BackgroundColorHover         = rgb(17, 70, 92);
+	SelectedBackgroundColor      = rgb(35, 140, 184);
+	SelectedTextColor            = White;
+	Padding                      = (3, 3, 3, 3);
+	Scrollbar                    = &Scrollbar;
+}
+
+ListView {
+	TextColor                    = rgb(190, 190, 190);
+	TextColorHover               = rgb(250, 250, 250);
+	BackgroundColor              = rgb( 80,  80,  80);
+	BackgroundColorHover         = rgb(100, 100, 100);
+	SelectedBackgroundColor      = rgb( 10, 110, 255);
+	SelectedBackgroundColorHover = rgb(30, 150, 255);
+	SelectedTextColor            = White;
+	Padding                      = (3, 3, 3, 3);
+	Scrollbar                    = &Scrollbar;
+}
+
+MenuBar {
+	TextureBackground             = ${blue_button00:10};
+	TextureItemBackground         = ${blue_button00:10};
+	TextureSelectedItemBackground = ${blue_button00:10};
+	TextColor                     = rgb(190, 190, 190);
+	SelectedTextColor             = White;
+	DistanceToSide                = 5;
+}
+
+MessageBox {
+	TextColor       = rgb(190, 190, 190);
+	Button          = &Button;
+
+	TextureTitlebar = ${blue_button05:10};
+	TitleColor      = rgb(190, 190, 190);
+	BackgroundColor = rgb( 80,  80,  80);
+	BorderColor     = Black;
+	Borders         = (1, 1, 1, 1);
+	DistanceToSide  = 5;
+	CloseButton     = {
+		Texture = ${red_cross};
+	};
+}
+
+Panel {
+	TextureBackground = ${grey_panel:10};
+}
+
+ProgressBar {
+	TextureBackground = ${grey_button05:5};
+	TextureFill       = ${blue_button01:5};
+	TextColor         = rgb(190, 190, 190);
+	TextColorFilled   = rgb(250, 250, 250);
+}
+
+RadioButton {
+	TextureUnchecked        = ${grey_circle};
+	TextureChecked          = ${blue_boxTick};
+	TextureUncheckedHover   = ${grey_circle};
+	TextureCheckedHover     = ${blue_boxTick};
+	TextureUncheckedFocused = ${grey_circle};
+	TextureCheckedFocused   = ${blue_boxTick};
+	TextColor               = rgb(190, 190, 190);
+	TextColorHover          = rgb(250, 250, 250);
+}
+
+Scrollbar {
+	TextureTrack          = ${grey_sliderVertical};
+	TextureTrackHover     = ${grey_sliderVertical};
+	TextureThumb          = ${blue_button07:10};
+	TextureThumbHover     = ${blue_button08:10};
+	TextureArrowUp        = ${blue_sliderUp};
+	TextureArrowUpHover   = ${blue_sliderUp};
+	TextureArrowDown      = ${blue_sliderDown};
+	TextureArrowDownHover = ${blue_sliderDown};
+}
+
+Slider {
+	TextureTrack      = ${grey_sliderHorizontal};
+	TextureTrackHover = ${grey_sliderHorizontal};
+	TextureThumb      = ${grey_sliderUp};
+}
+
+SpinButton {
+	TextureArrowUp        = ${grey_arrowUpGrey};
+	TextureArrowUpHover   = ${grey_arrowUpWhite};
+	TextureArrowDown      = ${grey_arrowDownGrey};
+	TextureArrowDownHover = ${grey_arrowDownWhite};
+	BorderBetweenArrows    = 0;
+}
+
+Tabs {
+	TextureTab         = ${grey_button13};
+	TextureSelectedTab = ${blue_button08};
+	TextColor          = rgb(190, 190, 190);
+	SelectedTextColor  = White;
+	DistanceToSide     = 8;
+}
+
+TextBox {
+	TextureBackground           = ${grey_button06:10};
+	TextColor                   = rgb(190, 190, 190);
+	SelectedTextColor           = White;
+	SelectedTextBackgroundColor = rgb( 10, 110, 255);
+	CaretColor                  = rgb(110, 110, 255);
+	Padding                     = (3, 3, 3, 3);
+	Scrollbar                   = &Scrollbar;
+}
+
+ToolTip {
+	TextColor       = rgb(190, 190, 190);
+	BackgroundColor = rgb( 80,  80,  80);
+	BorderColor     = Black;
+	Borders         = (1, 1, 1, 1);
+	Padding         = (2, 2, 2, 2);
+}
+
+ItemSlot {
+	BackgroundColor = rgba(255, 255, 255, 0);
+	BackgroundColorHover = rgba(255, 255, 255, 50);
+}
