@@ -1,6 +1,9 @@
 #include "Game.h"
 
-float Game::FPS = 50;
+float Game::FPS = 40;
+float Game::Speed = 0.25;
+
+// Loading Area================================================================
 void SetGrid(std::vector<std::vector<Color>> &grid, int Width, int Height)
 {
 	for (int i = 0; i < Width; i++)
@@ -43,7 +46,7 @@ Game::Game() : IScreen()
 	gameboardTexture->loadFromFile("image/BoardGame.png");
 
 	GameBoard.setTexture(*gameboardTexture);
-	GameBoard.setPosition(offset);
+	GameBoard.setPosition(BoardGameOffset);
 	GameBoard.setScale(CellSize * Width * 1.0f / GameBoard.getLocalBounds().width, CellSize * Height * 1.0f / GameBoard.getLocalBounds().height);
 
 	NextTerminosBoard = sf::RectangleShape(sf::Vector2f(200, 200));
@@ -64,11 +67,11 @@ Game::Game(sf::RenderWindow *window) : IScreen(window)
 	gameboardTexture->loadFromFile("image/BoardGame.jpg");
 
 	GameBoard.setTexture(*gameboardTexture);
-	GameBoard.setPosition(offset);
+	GameBoard.setPosition(BoardGameOffset);
 	GameBoard.setScale((CellSize * Width * 1.0f + 3) * 1.0f / GameBoard.getLocalBounds().width, (CellSize * Height + 3) * 1.0f / GameBoard.getLocalBounds().height);
 
 	NextTerminosBoard = sf::RectangleShape(sf::Vector2f(250, 250));
-	NextTerminosBoard.setPosition(sf::Vector2f(700, 100));
+	NextTerminosBoard.setPosition(NextTerminosBoardOffset);
 	NextTerminosBoard.setOutlineColor(sf::Color::Red);
 	NextTerminosBoard.setOutlineThickness(6);
 	NextTerminosBoard.setFillColor(sf::Color::Black);
@@ -81,14 +84,13 @@ Game::Game(sf::RenderWindow *window) : IScreen(window)
 	ScoreText.setFont(font);
 	ScoreText.setCharacterSize(65);
 	ScoreText.setFillColor(sf::Color::White);
-	ScoreText.setPosition(sf::Vector2f(620, 400));
+	ScoreText.setPosition(TextOffset);
 	ScoreText.setString(sf::String("Score: " + std::to_string(ScoreManager::getInstance().getScore())));
 
 	HighestScoreText.setFont(font);
 	HighestScoreText.setCharacterSize(45);
 	HighestScoreText.setFillColor(sf::Color::White);
-	HighestScoreText.setPosition(sf::Vector2f(620, 500));
-	HighestScoreText.setString(sf::String("Highest Score: " + std::to_string(ScoreManager::getInstance().getHighestScores())));
+	HighestScoreText.setPosition(TextOffset.x, TextOffset.y + 100);
 
 	ScoreManager::getInstance().resetScore();
 	for (int i = 0; i < NumberOfTerminos; i++)
@@ -128,6 +130,23 @@ void Game::loadWidgets()
 	widgets->setVisible(true);
 	gui.add(widgets);
 }
+//================================================================================================
+
+//Draw Area================================================================================================
+
+void Game::RenderNextTermitos(sf::RenderWindow *window)
+{
+	// Next Termitos is Termitos that was second element in Vector<Termitos>
+	std::vector<Block> nextTerminos = terminos[1]->GetMinos();
+	for (int i = 0; i < nextTerminos.size(); i++)
+	{
+		sf::Vector2i temp = nextTerminos[i].getPosition();
+		sf::Sprite cell(*BlockTexture::GetInstance().textture[static_cast<size_t>(nextTerminos[0].getColor()) - 1]);
+		cell.setScale(CellSize / cell.getLocalBounds().width, CellSize / cell.getLocalBounds().height);
+		cell.setPosition(temp.x * CellSize + NextTerminosOffset.x, temp.y * CellSize + NextTerminosOffset.y);
+		window->draw(cell);
+	}
+}
 void Game::Draw(sf::RenderWindow *window)
 {
 	window->draw(GameBoard);
@@ -140,30 +159,22 @@ void Game::Draw(sf::RenderWindow *window)
 				continue;
 			sf::Sprite cell(*BlockTexture::GetInstance().textture[static_cast<size_t>(Grid[i][j]) - 1]);
 			cell.setScale(CellSize / cell.getLocalBounds().width, CellSize / cell.getLocalBounds().height);
-			cell.setPosition(CellSize * i + offset.x, CellSize * j + offset.y);
+			cell.setPosition(CellSize * i + BoardGameOffset.x, CellSize * j + BoardGameOffset.y);
 			window->draw(cell);
 		}
 	}
+	// Set String and Draw Text================================================================
 	ScoreText.setString(sf::String("Score: " + std::to_string(ScoreManager::getInstance().getScore())));
-	HighestScoreText.setString(sf::String("Highest Score: " + std::to_string(ScoreManager::getInstance().getScore())));
+	HighestScoreText.setString(sf::String("Highest Score: " + std::to_string(ScoreManager::getInstance().getHighestScores())));
 	window->draw(ScoreText);
 	window->draw(HighestScoreText);
+	//==========================================================
 	RenderNextTermitos(window);
 }
-void Game::RenderNextTermitos(sf::RenderWindow *window)
-{
-	std::vector<Block> nextTerminos = terminos[1]->GetMinos();
-	for (int i = 0; i < nextTerminos.size(); i++)
-	{
-		sf::Vector2i temp = nextTerminos[i].getPosition();
-		sf::Sprite cell(*BlockTexture::GetInstance().textture[static_cast<size_t>(nextTerminos[0].getColor()) - 1]);
-		cell.setScale(CellSize / cell.getLocalBounds().width, CellSize / cell.getLocalBounds().height);
-		cell.setPosition(temp.x * CellSize + 520, temp.y * CellSize + 250);
-		window->draw(cell);
-	}
-}
+//==========================================================
 void Game::HandleFullCollum()
 {
+	std::vector<int> rows;
 	for (int y = Height - 1; y >= 0; --y)
 	{
 		bool isFullRow = true;
@@ -234,21 +245,21 @@ void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 	sf::Time deltaTime;
 
 	sf::Event event;
+	BackGround background = BackGround::getinstance();
 	bool flag = true;
 	while (window->isOpen())
 	{
 		if (StateManager::getInstance().getState() == AppState::MAIN_MENU)
 			break;
 		// int state = StateManager::getInstance().getState();
-		std::cout << "Current state: " << static_cast<int>(StateManager::getInstance().getState()) << std::endl;
+
 		while (window->pollEvent(event))
 		{
 			gui.handleEvent(event);
-			std::cout << "New loop\n";
 			bool flag = true;
 			if (event.type == sf::Event::Closed)
 			{
-				HasExitGame = true;
+				window->close();
 				return;
 			}
 			if (event.type == sf::Event::KeyPressed)
@@ -288,13 +299,17 @@ void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 		}
 
 		if (StateManager::getInstance().getState() == AppState::GAME_OVER)
+		{
+			int score = ScoreManager::getInstance().getScore();
+			messageBox->setText("DO YOU WANT TO RESTART THE GAME?\nYour Score:" + std::to_string(score));
 			messageBox->setVisible(true);
+		}
 		else
 		{
 			deltaTime = clock.restart();
 
 			timeToUpdate += deltaTime;
-			if (timeToUpdate.asSeconds() >= 0.25)
+			if (timeToUpdate.asSeconds() >= Speed)
 			{
 				bool isUpdateNeeded = terminos[0]->Update(Grid);
 				if (!isUpdateNeeded)
@@ -317,6 +332,7 @@ void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 		}
 
 		window->clear(sf::Color(55, 119, 162));
+		background.DrawBackGround(window);
 		Draw(window);
 		gui.draw();
 		window->display();

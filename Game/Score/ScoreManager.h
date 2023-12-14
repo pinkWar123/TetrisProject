@@ -2,6 +2,8 @@
 #include <vector>
 #include "../../Login/json.hpp"
 #include <fstream>
+#include <algorithm>
+#include<iostream>
 #include "../../Manager/UserManager.h"
 using json = nlohmann::json;
 

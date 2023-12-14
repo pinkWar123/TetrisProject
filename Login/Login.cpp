@@ -19,27 +19,29 @@ void Login::loadWidgets()
 
 	userNameBox = tgui::EditBox::create();
 	userNameBox->setWidgetName("Username");
-	userNameBox->setSize({"30%", "12.5%"});
-	userNameBox->setPosition({"16.67%", "16.67%"});
+	userNameBox->setSize({"60%", "7.5%"});
+	userNameBox->setPosition({"20%", "40%"});
 	userNameBox->setDefaultText("Username");
 	userNameBox->setRenderer(theme->getRenderer("EditBox"));
 
 	passWordBox = tgui::EditBox::copy(userNameBox);
 	passWordBox->setWidgetName("Password");
-	passWordBox->setPosition({"16.67%", "41.6%"});
+	passWordBox->setPosition({"20%", "52%"});
 	passWordBox->setPasswordCharacter('*');
 	passWordBox->setDefaultText("Password");
 	passWordBox->setRenderer(theme->getRenderer("EditBox"));
+	passWordBox->setTextSize(32);
 
 	loginButton = tgui::Button::create("Login");
 	loginButton->setWidgetName("Login");
-	loginButton->setSize({"25%", "16.67%"});
+	loginButton->setSize({"25%", "10%"});
 	loginButton->setPosition({"50%", "70%"});
 	loginButton->onClick(&Login::SignIn, this);
 	loginButton->setRenderer(theme->getRenderer("Button"));
+	passWordBox->setTextSize(32);
 
 	signUpButton = tgui::Button::create("SignUp");
-	signUpButton->setSize({"25%", "16.67%"});
+	signUpButton->setSize({"25%", "10%"});
 	signUpButton->setPosition({"25%", "70%"});
 	signUpButton->onClick(&Login::CreateNewAccount, this);
 	signUpButton->setRenderer(theme->getRenderer("Button"));
@@ -57,6 +59,7 @@ void Login::loadWidgets()
 void Login::Update(sf::RenderWindow *window, bool HasExitGame)
 {
 	// window->draw()
+	BackGround backround = BackGround::getinstance();
 	while (window->isOpen())
 	{
 		if (StateManager::getInstance().getState() == AppState::MAIN_MENU)
@@ -66,10 +69,11 @@ void Login::Update(sf::RenderWindow *window, bool HasExitGame)
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				HasExitGame = true;
-				return;
+				window->close();
 			}
 			window->clear();
+			backround.DrawBackGround(window);
+			backround.DrawLogo(window);
 			Draw(window);
 			gui.handleEvent(event);
 		}
@@ -96,7 +100,7 @@ void Login::CreateNewAccount()
 	newObject["Favorite"] = json::array();
 	object["user"].push_back(newObject);
 
-	std::ofstream os("user.json");
+	std::ofstream os("Login/user.json");
 
 	os << object;
 	stream.close();

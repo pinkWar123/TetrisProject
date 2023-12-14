@@ -55,21 +55,6 @@ void Button::Update(sf::RenderWindow* window)
 
 void Button::Initialize()
 {
-	/*rect = sf::RectangleShape(size);
-	rect.setFillColor(sf::Color::Green);
-	rect.setPosition(pos);
-	rect.setSize(size);
-	text.setFont(*font);
-	text.setString(string); std::cout << textColor.toInteger(); 
-	text.setCharacterSize(50);
-	text.setFillColor(sf::Color::Red);
-	text.setStyle(sf::Text::Bold);
-	float pos_x = (pos.x + rect.getGlobalBounds().width / 2.0f) -
-		(text.getGlobalBounds().width / 2);
-	float pos_y = (pos.y + rect.getGlobalBounds().height / 2.0f) -
-		(text.getGlobalBounds().height / 2);
-	text.setPosition(pos_x, pos_y);
-	isFocused = false;*/
 }
 void Button::Execute(sf::RenderWindow* window)
 {

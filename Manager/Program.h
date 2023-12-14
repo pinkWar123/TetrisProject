@@ -14,8 +14,6 @@ private:
 	Setting *setting;
 	std::shared_ptr<Game> game;
 
-	sf::Texture *texture;
-	sf::Sprite *sprite;
 	sf::Event ev;
 
 public:

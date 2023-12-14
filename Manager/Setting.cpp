@@ -11,6 +11,7 @@ Setting::Setting(sf::RenderWindow *window) : IScreen(window)
 }
 void Setting::Update(sf::RenderWindow *window, bool HasExitGame)
 {
+	BackGround background = BackGround::getinstance();
 	while (window->isOpen())
 	{
 		if (StateManager::getInstance().getState() != AppState::SETTINGS)
@@ -20,14 +21,14 @@ void Setting::Update(sf::RenderWindow *window, bool HasExitGame)
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				HasExitGame = true;
-				break;
+				window->close();
 			}
 			gui.handleEvent(event);
 			if (StateManager::getInstance().getState() != AppState::SETTINGS)
-					return;
+				return;
 
 			window->clear();
+			background.DrawBackGround(window);
 			gui.draw();
 			window->draw(SettingText);
 			window->draw(VolumeText);
@@ -42,6 +43,7 @@ void Setting::Update(sf::RenderWindow *window, bool HasExitGame)
 
 void Setting::loadWidgets()
 {
+	tgui::Theme::Ptr theme = tgui::Theme::create({"theme/kenney.txt"});
 	//  volume here==========================================
 	volume = tgui::Slider::create();
 	volume->setMinimum(0);
@@ -90,30 +92,30 @@ void Setting::loadWidgets()
 	easyRadioButton->setChecked(true);
 	easyRadioButton->onCheck([]
 							 {
-        Game::FPS = 40;
+        Game::Speed = 0.25;
         std::cout << "Selected difficulty: Easy, FPS: " << Game::FPS << std::endl; });
 
 	hardRadioButton->onCheck([]
 							 {
-        Game::FPS = 80;
+         Game::Speed = 0.15;
         std::cout << "Selected difficulty: Hard, FPS: " << Game::FPS << std::endl; });
 
 	veryHardRadioButton->onCheck([]
 								 {
-        Game::FPS = 110;
+         Game::Speed = 0.1;
         std::cout << "Selected difficulty: Very Hard, FPS: " << Game::FPS << std::endl; });
 	//================================================================================================
 	BackButton = tgui::Button::create();
 	BackButton->setPosition(30, 30);
 	BackButton->setSize(100, 100);
 	BackButton->setText("Back");
-	BackButton->getRenderer()->setTextSize(20);
+	BackButton->setRenderer(theme->getRenderer("Button"));
+	BackButton->getRenderer()->setTextSize(25);
 	BackButton->getRenderer()->setTextColorDownHover(tgui::Color::Red);
-	BackButton->onPress([](const tgui::String& text)
-	{
+	BackButton->onPress([](const tgui::String &text)
+						{
 		StateManager::getInstance().setState(AppState::MAIN_MENU);
-		std::cout << "Change to Main Menu" << std::endl;
-	});
+		std::cout << "Change to Main Menu" << std::endl; });
 	//================================================================================================
 	// Add RadioButtons to the GUI
 	widgets->add(easyRadioButton);
@@ -148,6 +150,4 @@ void Setting::loadWidgets()
 	DifficultyText.setCharacterSize(30);
 	DifficultyText.setFillColor(sf::Color::White);
 	//================================================================================================
-
-	
 }

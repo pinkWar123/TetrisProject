@@ -31,8 +31,10 @@ private:
     const int Height = 20;
     const int ScreenWidth = CellSize * Width;
     const int ScreenHeight = CellSize * Height;
-    const int NumberOfTerminos = 2;
-    const sf::Vector2f offset = sf::Vector2f(50, 0);
+    const sf::Vector2f BoardGameOffset = sf::Vector2f(100, 20);
+    const sf::Vector2f NextTerminosBoardOffset = sf::Vector2f(700, 100);
+    const sf::Vector2f NextTerminosOffset = sf::Vector2f(520, 250);
+    const sf::Vector2f TextOffset = sf::Vector2f(700, 400);
     //-- //----------------------------------------------------------------Manager variable --------------------------------
 
     sf::RenderWindow window;
@@ -47,6 +49,7 @@ private:
     //-- //----------------------------------------------------------------Game variable --------------------------------
     std::vector<std::vector<Color>> Grid;
     int TotalScore = 0;
+    const int NumberOfTerminos = 2;
 
     void HandleFullCollum();
     bool HandleGameOver();
@@ -56,6 +59,7 @@ private:
 
 public:
     static float FPS;
+    static float Speed;
 
     Game();
     Game(sf::RenderWindow *window);

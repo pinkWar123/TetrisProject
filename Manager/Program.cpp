@@ -10,7 +10,6 @@ void Program::Run()
 		while (window->pollEvent(ev))
 		{
 			window->clear();
-			window->draw(*sprite);
 			gui.draw();
 			gui.handleEvent(ev);
 			bool HasExitInStateScreen = false;
@@ -52,16 +51,6 @@ Program::Program()
 	window = new sf::RenderWindow(sf::VideoMode(1440, 1024), "Tetris Game", sf::Style::Titlebar | sf::Style::Close);
 	gui.setWindow(*window);
 
-	// Set texture and sprite and font
-	texture = new sf::Texture();
-	std::string src = "image/background3.jpg";
-	texture->loadFromFile(src);
-	texture->setSmooth(true);
-	sprite = new sf::Sprite();
-	sprite->setTexture(*texture);
-	sprite->setScale(1440.f / texture->getSize().x, 1024.f / texture->getSize().y);
-	
-
 	// Load screens
 	login = new Login(window);
 
@@ -78,8 +67,7 @@ Program::~Program()
 	delete login;
 	delete setting;
 
-	delete texture;
-	delete sprite;
+	BackGround::getinstance().DeleteData();
 }
 
 

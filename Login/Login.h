@@ -16,7 +16,6 @@ private:
 	tgui::EditBox::Ptr userNameBox;
 	tgui::EditBox::Ptr passWordBox;
 	tgui::Button::Ptr signUpButton;
-	//tgui::Group::Ptr widgets;
 	static std::string userName;
 	static std::string passWord;
 	static int userIndex;
