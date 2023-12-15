@@ -39,8 +39,5 @@ public:
 		widgets->setVisible(false);
 	}
 
-	void toggleVisible(bool value)
-	{
-		widgets->setVisible(value);
-	}
+	
 };

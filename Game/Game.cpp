@@ -16,26 +16,26 @@ void SetGrid(std::vector<std::vector<Color>> &grid, int Width, int Height)
 		grid.push_back(temp);
 	}
 }
-Terminos *Game::RandomTerminos()
+Tetromino *Game::RandomTerminos()
 {
 
-	TERMINOS type = Terminos::Randomize();
-	Terminos *ter = NULL;
+	TETROMINO type = Tetromino::Randomize();
+	Tetromino *ter = NULL;
 
-	if (type == TERMINOS::I)
-		ter = static_cast<Terminos *>(new I_Terminos());
-	else if (type == TERMINOS::J)
-		ter = static_cast<Terminos *>(new J_Terminos());
-	else if (type == TERMINOS::L)
-		ter = static_cast<Terminos *>(new L_Terminos());
-	else if (type == TERMINOS::O)
-		ter = static_cast<Terminos *>(new O_Terminos());
-	else if (type == TERMINOS::S)
-		ter = static_cast<Terminos *>(new S_Terminos());
-	else if (type == TERMINOS::T)
-		ter = static_cast<Terminos *>(new T_Terminos());
-	else if (type == TERMINOS::Z)
-		ter = static_cast<Terminos *>(new Z_Terminos());
+	if (type == TETROMINO::I)
+		ter = static_cast<Tetromino *>(new I_Terminos());
+	else if (type == TETROMINO::J)
+		ter = static_cast<Tetromino *>(new J_Terminos());
+	else if (type == TETROMINO::L)
+		ter = static_cast<Tetromino *>(new L_Terminos());
+	else if (type == TETROMINO::O)
+		ter = static_cast<Tetromino *>(new O_Terminos());
+	else if (type == TETROMINO::S)
+		ter = static_cast<Tetromino *>(new S_Terminos());
+	else if (type == TETROMINO::T)
+		ter = static_cast<Tetromino *>(new T_Terminos());
+	else if (type == TETROMINO::Z)
+		ter = static_cast<Tetromino *>(new Z_Terminos());
 	return ter;
 }
 Game::Game() : IScreen()
@@ -43,11 +43,11 @@ Game::Game() : IScreen()
 	FPS = 50;
 	SetGrid(Grid, Width, Height);
 	sf::Texture *gameboardTexture = new sf::Texture();
-	gameboardTexture->loadFromFile("image/BoardGame.png");
+	gameboardTexture->loadFromFile("image/Board.png");
 
 	GameBoard.setTexture(*gameboardTexture);
 	GameBoard.setPosition(BoardGameOffset);
-	GameBoard.setScale(CellSize * Width * 1.0f / GameBoard.getLocalBounds().width, CellSize * Height * 1.0f / GameBoard.getLocalBounds().height);
+	GameBoard.setScale(CellSize * (Width + 2) * 1.0f / GameBoard.getLocalBounds().width, CellSize * (Height + 2) * 1.0f / GameBoard.getLocalBounds().height);
 
 	NextTerminosBoard = sf::RectangleShape(sf::Vector2f(200, 200));
 	NextTerminosBoard.setPosition(sf::Vector2f(700, 150));
@@ -64,12 +64,11 @@ Game::Game(sf::RenderWindow *window) : IScreen(window)
 	FPS = 50;
 	SetGrid(Grid, Width, Height);
 	sf::Texture *gameboardTexture = new sf::Texture();
-	gameboardTexture->loadFromFile("image/BoardGame.jpg");
+	gameboardTexture->loadFromFile("image/Board.png");
 
 	GameBoard.setTexture(*gameboardTexture);
 	GameBoard.setPosition(BoardGameOffset);
-	GameBoard.setScale((CellSize * Width * 1.0f + 3) * 1.0f / GameBoard.getLocalBounds().width, (CellSize * Height + 3) * 1.0f / GameBoard.getLocalBounds().height);
-
+	GameBoard.setScale((CellSize * (Width + 2)) * 1.0f / GameBoard.getLocalBounds().width, (CellSize * (Height + 2) + 3) * 1.0f / GameBoard.getLocalBounds().height);
 	NextTerminosBoard = sf::RectangleShape(sf::Vector2f(250, 250));
 	NextTerminosBoard.setPosition(NextTerminosBoardOffset);
 	NextTerminosBoard.setOutlineColor(sf::Color::Red);
@@ -132,7 +131,7 @@ void Game::loadWidgets()
 }
 //================================================================================================
 
-//Draw Area================================================================================================
+// Draw Area================================================================================================
 
 void Game::RenderNextTermitos(sf::RenderWindow *window)
 {
@@ -158,8 +157,8 @@ void Game::Draw(sf::RenderWindow *window)
 			if (Grid[i][j] == Color::BLACK)
 				continue;
 			sf::Sprite cell(*BlockTexture::GetInstance().textture[static_cast<size_t>(Grid[i][j]) - 1]);
-			cell.setScale(CellSize / cell.getLocalBounds().width, CellSize / cell.getLocalBounds().height);
-			cell.setPosition(CellSize * i + BoardGameOffset.x, CellSize * j + BoardGameOffset.y);
+			cell.setScale((CellSize + 1) * 1.0f / cell.getLocalBounds().width, (CellSize + 1) * 1.0f / cell.getLocalBounds().height);
+			cell.setPosition(CellSize * i + AreaPlayerOffset.x, CellSize * j + AreaPlayerOffset.y);
 			window->draw(cell);
 		}
 	}
@@ -172,7 +171,7 @@ void Game::Draw(sf::RenderWindow *window)
 	RenderNextTermitos(window);
 }
 //==========================================================
-void Game::HandleFullCollum()
+void Game::HandleFullRow()
 {
 	std::vector<int> rows;
 	for (int y = Height - 1; y >= 0; --y)
@@ -223,7 +222,6 @@ bool Game::HandleGameOver()
 }
 void Game::ResetGame()
 {
-	std::cout << "New game\n";
 	ScoreManager::getInstance().resetScore();
 	for (int i = 0; i < Width; i++)
 	{
@@ -237,7 +235,6 @@ void Game::ResetGame()
 		terminos.push_back(RandomTerminos());
 	timeToUpdate = sf::Time::Zero;
 }
-
 void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 {
 	sf::Clock clock;
@@ -278,9 +275,13 @@ void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 				}
 				if (event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up)
 				{
-					terminos[0]->Rotate(Grid);
-					SoundManager::getInstance().playSound(SoundEvent::ROTATE);
-					flag = false;
+					// detect if it not O Block
+					if (terminos[0]->GetColor() != Color::YELLOW)
+					{
+						terminos[0]->Rotate(Grid);
+						SoundManager::getInstance().playSound(SoundEvent::ROTATE);
+						flag = false;
+					}
 				}
 				if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down)
 				{
@@ -314,7 +315,7 @@ void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 				bool isUpdateNeeded = terminos[0]->Update(Grid);
 				if (!isUpdateNeeded)
 				{
-					HandleFullCollum();
+					HandleFullRow();
 					if (HandleGameOver())
 					{
 						StateManager::getInstance().setState(AppState::GAME_OVER);
@@ -340,7 +341,6 @@ void Game::Update(sf::RenderWindow *window, bool HasExitGame)
 		sf::sleep(maxFrameTime - deltaTime);
 	}
 }
-
 Game::~Game()
 {
 	for (int i = 0; i < terminos.size(); ++i)

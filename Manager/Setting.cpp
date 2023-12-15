@@ -93,17 +93,17 @@ void Setting::loadWidgets()
 	easyRadioButton->onCheck([]
 							 {
         Game::Speed = 0.25;
-        std::cout << "Selected difficulty: Easy, FPS: " << Game::FPS << std::endl; });
+        std::cout << "Selected difficulty: Easy " << std::endl; });
 
 	hardRadioButton->onCheck([]
 							 {
          Game::Speed = 0.15;
-        std::cout << "Selected difficulty: Hard, FPS: " << Game::FPS << std::endl; });
+        std::cout << "Selected difficulty: Hard" << std::endl; });
 
 	veryHardRadioButton->onCheck([]
 								 {
          Game::Speed = 0.1;
-        std::cout << "Selected difficulty: Very Hard, FPS: " << Game::FPS << std::endl; });
+        std::cout << "Selected difficulty: Very Hard" << std::endl; });
 	//================================================================================================
 	BackButton = tgui::Button::create();
 	BackButton->setPosition(30, 30);

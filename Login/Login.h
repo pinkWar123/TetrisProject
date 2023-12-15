@@ -16,9 +16,8 @@ private:
 	tgui::EditBox::Ptr userNameBox;
 	tgui::EditBox::Ptr passWordBox;
 	tgui::Button::Ptr signUpButton;
-	static std::string userName;
-	static std::string passWord;
-	static int userIndex;
+	tgui::MessageBox::Ptr messageBox;
+	tgui::Button::Ptr loginButton;
 	
 	void updateTextSize();
 	
@@ -26,15 +25,12 @@ private:
 public:
 	Login();
 	Login(sf::RenderWindow* window);
-	tgui::Button::Ptr loginButton;
+	
 	void Update(sf::RenderWindow* window, bool HasExitGame) override;
 	void loadWidgets() override;
 	void SignIn();
 	bool isValidated();
 	
 	tgui::Group::Ptr getWidgets();
-	static std::string getUserName();
-	static std::string getPassWord();
-	static int getUserIndex();
 };
 

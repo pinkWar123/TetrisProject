@@ -76,7 +76,7 @@ void ScoreManager::saveScore()
         }
         else
         {
-            std::cout << "Before: " <<  (*it)["HighScore"].size() << std::endl;
+            std::cout << "Before: " << (*it)["HighScore"].size() << std::endl;
             (*it)["HighScore"].push_back(score);
             std::cout << "after: " << (*it)["HighScore"].size() << std::endl;
             sort((*it)["HighScore"].begin(), (*it)["HighScore"].end(), std::greater<int>());
@@ -84,13 +84,7 @@ void ScoreManager::saveScore()
     }
     else
     {
-        // Username doesn't exist, add a new entry
-        json newObject;
-        newObject["Username"] = UserManager::getInstance().getUserName(); // Add the username (replace "Username" with the actual field name)
-        newObject["Password"] = UserManager::getInstance().getPassword();
-        newObject["Favorite"] = json::array();
-        newObject["HighScore"] = score;
-        object["user"].push_back(newObject);
+        std::cout << "Error";
     }
 
     std::ofstream os("Login/user.json");
@@ -111,8 +105,8 @@ std::vector<int> ScoreManager::getHighScores()
 
     if (it != object["user"].end())
     {
-        if (!object["user"].contains("HighScore"))
-            return (*it)["HighScore"]; 
+        if ((*it).contains("HighScore"))
+            return (*it)["HighScore"];
     }
     return highScores;
 }

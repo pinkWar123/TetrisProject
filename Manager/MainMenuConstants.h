@@ -20,7 +20,6 @@ enum Extrabutton
 
 // Font and color
 const std::string fontPath = "Font/arial.ttf";
-const std::string texturePath = "image/button.png";
 const sf::Color textColor = sf::Color::Black;
 const sf::Color bkgColor = sf::Color(128,128,128);
 
