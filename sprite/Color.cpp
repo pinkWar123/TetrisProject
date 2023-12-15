@@ -37,3 +37,8 @@ BlockTexture &BlockTexture::GetInstance()
     static BlockTexture instance;
     return instance;
 }
+void BlockTexture::deleteData()
+{
+    for(int i = 0; i < textture.size(); i++)
+        delete textture[i];
+}

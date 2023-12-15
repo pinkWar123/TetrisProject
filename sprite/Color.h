@@ -7,6 +7,7 @@ class BlockTexture
 private:
     BlockTexture();
 public:
+    void deleteData();
     static BlockTexture& GetInstance();
     std::vector<sf::Texture *> textture;
 };

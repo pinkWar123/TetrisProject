@@ -60,7 +60,6 @@ private:
 public:
     static float FPS;
     static float Speed;
-
     Game();
     Game(sf::RenderWindow *window);
     void ResetGame();

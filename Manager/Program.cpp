@@ -66,7 +66,7 @@ Program::~Program()
 	delete mainMenu;
 	delete login;
 	delete setting;
-
+	BlockTexture::GetInstance().deleteData();
 	BackGround::getinstance().DeleteData();
 }
 
