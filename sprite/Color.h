@@ -4,8 +4,9 @@
 
 class BlockTexture
 {
-public:
+private:
     BlockTexture();
+public:
     static BlockTexture& GetInstance();
     std::vector<sf::Texture *> textture;
 };

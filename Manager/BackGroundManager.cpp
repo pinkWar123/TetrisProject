@@ -45,7 +45,7 @@ void BackGround::DrawLogo(sf::RenderWindow *window)
     window->draw(*LogoSprite);
 }
 
-BackGround& BackGround::getinstance()
+BackGround &BackGround::getinstance()
 {
     static BackGround instance;
     return instance;

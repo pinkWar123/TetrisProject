@@ -2,18 +2,9 @@
 
 MainMenu::MainMenu() : IScreen()
 {
-    sf::Font *font = new sf::Font();
-    sf::Texture *tex = new sf::Texture();
-    font->loadFromFile(fontPath);
-    tex->loadFromFile(texturePath);
 }
 MainMenu::MainMenu(sf::RenderWindow *window) : IScreen(window)
 {
-    sf::Font *font = new sf::Font();
-    sf::Texture *tex = new sf::Texture();
-    font->loadFromFile(fontPath);
-    tex->loadFromFile(texturePath);
-
     loadWidgets();
 }
 MainMenu::MainMenu(sf::RenderWindow *window, SoundManager *&sound) : IScreen(window)
@@ -21,7 +12,6 @@ MainMenu::MainMenu(sf::RenderWindow *window, SoundManager *&sound) : IScreen(win
     sf::Font *font = new sf::Font();
     sf::Texture *tex = new sf::Texture();
     font->loadFromFile(fontPath);
-    tex->loadFromFile(texturePath);
     this->sound = sound;
     loadWidgets();
 }

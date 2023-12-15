@@ -16,6 +16,7 @@ private:
 	tgui::EditBox::Ptr userNameBox;
 	tgui::EditBox::Ptr passWordBox;
 	tgui::Button::Ptr signUpButton;
+	tgui::MessageBox::Ptr messageBox;
 	tgui::Button::Ptr loginButton;
 	
 	void updateTextSize();
@@ -24,6 +25,7 @@ private:
 public:
 	Login();
 	Login(sf::RenderWindow* window);
+	
 	void Update(sf::RenderWindow* window, bool HasExitGame) override;
 	void loadWidgets() override;
 	void SignIn();

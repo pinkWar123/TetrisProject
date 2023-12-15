@@ -76,7 +76,7 @@ void ScoreManager::saveScore()
         }
         else
         {
-            std::cout << "Before: " <<  (*it)["HighScore"].size() << std::endl;
+            std::cout << "Before: " << (*it)["HighScore"].size() << std::endl;
             (*it)["HighScore"].push_back(score);
             std::cout << "after: " << (*it)["HighScore"].size() << std::endl;
             sort((*it)["HighScore"].begin(), (*it)["HighScore"].end(), std::greater<int>());
@@ -105,8 +105,8 @@ std::vector<int> ScoreManager::getHighScores()
 
     if (it != object["user"].end())
     {
-        if (!object["user"].contains("HighScore"))
-            return (*it)["HighScore"]; 
+        if ((*it).contains("HighScore"))
+            return (*it)["HighScore"];
     }
     return highScores;
 }

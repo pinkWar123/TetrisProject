@@ -14,7 +14,20 @@ Login::Login(sf::RenderWindow *window) : IScreen(window)
 
 void Login::loadWidgets()
 {
-	updateTextSize();
+	messageBox = tgui::MessageBox::create("Invalid username/password.", " Please enter again!");
+	messageBox->addButton("Close");
+	messageBox->setTextSize(15);
+	messageBox->setPosition(200, 200);
+	messageBox->setClientSize(tgui::Layout2d(500, 200));
+	messageBox->setButtonAlignment(tgui::MessageBox::Alignment::Center);
+	messageBox->setLabelAlignment(tgui::MessageBox::Alignment::Center);
+	messageBox->onButtonPress([msgBox = messageBox.get(), game = this](const tgui::String &button)
+							  {
+								  if (button == "Close")
+								  {
+									  msgBox->setVisible(false);
+								  } });
+	messageBox->setVisible(false);
 	tgui::Theme::Ptr theme = tgui::Theme::create({"theme/kenney.txt"});
 
 	userNameBox = tgui::EditBox::create();
@@ -46,11 +59,14 @@ void Login::loadWidgets()
 	signUpButton->onClick(&Login::CreateNewAccount, this);
 	signUpButton->setRenderer(theme->getRenderer("Button"));
 
+	updateTextSize();
+
 	// widgets = tgui::Group::create();
 	widgets->add(userNameBox);
 	widgets->add(passWordBox);
 	widgets->add(loginButton);
 	widgets->add(signUpButton);
+	widgets->add(messageBox);
 
 	widgets->setVisible(true);
 	gui.add(widgets);
@@ -74,6 +90,7 @@ void Login::Update(sf::RenderWindow *window, bool HasExitGame)
 			backround.DrawBackGround(window);
 			backround.DrawLogo(window);
 			Draw(window);
+			// messageBox->draw();
 			gui.handleEvent(event);
 		}
 	}
@@ -81,9 +98,9 @@ void Login::Update(sf::RenderWindow *window, bool HasExitGame)
 
 void Login::updateTextSize()
 {
-	// Update the text size of all widgets in the gui, based on the current window height
 	const float windowHeight = gui.getView().getRect().height;
-	gui.setTextSize(static_cast<unsigned int>(0.07f * windowHeight)); // 7% of height
+	userNameBox->setTextSize(static_cast<unsigned int>(0.07f * windowHeight)); // 7% of height
+	passWordBox->setTextSize(static_cast<unsigned int>(0.07f * windowHeight)); // 7% of height
 }
 
 void Login::CreateNewAccount()
@@ -93,6 +110,18 @@ void Login::CreateNewAccount()
 
 	std::ifstream stream("Login/user.json", std::ios::in);
 	json object = json::parse(stream);
+
+	auto it = std::find_if(object["user"].begin(), object["user"].end(), [userName, passWord](const json &user)
+						   {
+							   return user["Username"] == userName && user["Password"] == passWord; // Replace "Username" with the actual field name in your JSON
+						   });
+	if (it != object["user"].end())
+	{
+		messageBox->setText("Account has already been created!");
+		messageBox->setVisible(true);
+		return;
+	}
+
 	json newObject;
 	newObject["Username"] = userName;
 	newObject["Password"] = passWord;
@@ -124,7 +153,10 @@ bool Login::isValidated()
 
 			return true;
 		}
+		
 	}
+	messageBox->setText(tgui::String("Invalid username/password. Please enter again!"));
+	messageBox->setVisible(true);
 	is.close();
 	return false;
 }
@@ -143,5 +175,4 @@ tgui::Group::Ptr Login::getWidgets()
 {
 	return widgets;
 }
-
 
