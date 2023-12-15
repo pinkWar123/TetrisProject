@@ -84,13 +84,7 @@ void ScoreManager::saveScore()
     }
     else
     {
-        // Username doesn't exist, add a new entry
-        json newObject;
-        newObject["Username"] = UserManager::getInstance().getUserName(); // Add the username (replace "Username" with the actual field name)
-        newObject["Password"] = UserManager::getInstance().getPassword();
-        newObject["Favorite"] = json::array();
-        newObject["HighScore"] = score;
-        object["user"].push_back(newObject);
+        std::cout << "Error";
     }
 
     std::ofstream os("Login/user.json");

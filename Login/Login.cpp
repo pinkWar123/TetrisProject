@@ -58,7 +58,6 @@ void Login::loadWidgets()
 
 void Login::Update(sf::RenderWindow *window, bool HasExitGame)
 {
-	// window->draw()
 	BackGround backround = BackGround::getinstance();
 	while (window->isOpen())
 	{
@@ -125,8 +124,6 @@ bool Login::isValidated()
 
 			return true;
 		}
-		Login::userName = userName;
-		Login::passWord = passWord;
 	}
 	is.close();
 	return false;
@@ -147,17 +144,4 @@ tgui::Group::Ptr Login::getWidgets()
 	return widgets;
 }
 
-std::string Login::getUserName()
-{
-	return userName;
-}
 
-std::string Login::getPassWord()
-{
-	return passWord;
-}
-
-int Login::getUserIndex()
-{
-	return Login::userIndex;
-}
