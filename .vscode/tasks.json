@@ -1,0 +1,43 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe build active file",
+			"command": "D://software//winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5//mingw64/bin//g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"*.cpp",
+				"Game/*.cpp",
+				"Game/Score/*.cpp",
+				"Game/Tetromino/*.cpp",
+				"Login/*.cpp",
+				"Manager/*.cpp",
+				"Sound/*.cpp",
+				"sprite/*.cpp",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"-Isrc/include",
+				"-Lsrc/lib/SFML",
+				"-Lsrc/lib/TGUI",
+				"-ltgui",
+				"-lsfml-graphics",
+				"-lsfml-window",
+				"-lsfml-system",
+				"-lsfml-audio"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: D://software//winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5//mingw64/bin//g++.exe"
+		}
+	]
+}
