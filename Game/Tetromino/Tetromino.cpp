@@ -164,6 +164,8 @@ void Tetromino::Rotate(std::vector<std::vector<Color>> &grid)
     std::vector<Block> temp = minos; // Bước 1
     // Tính toán vị trí trung tâm xoay
     sf::Vector2i center = temp[1].getPosition();
+
+    // Bước 2: Xoay các điểm quanh vị trí trung tâm
     for (int i = 0; i < temp.size(); i++)
     {
         sf::Vector2i pos = temp[i].getPosition();
@@ -177,8 +179,41 @@ void Tetromino::Rotate(std::vector<std::vector<Color>> &grid)
         temp[i].setPosition(sf::Vector2i(newX, newY));
     }
 
+    // Bước 3: Kiểm tra và điều chỉnh nếu điểm mới nằm ngoài biên
+    int minX = std::numeric_limits<int>::max();
+    int maxX = std::numeric_limits<int>::min();
+
+    for (int i = 0; i < temp.size(); i++)
+    {
+        sf::Vector2i pos = temp[i].getPosition();
+        minX = std::min(minX, pos.x);
+        maxX = std::max(maxX, pos.x);
+    }
+
+    int xOffset = 0;
+
+    // Kiểm tra nếu tetromino nằm ngoài biên trái
+    if (minX < 0)
+    {
+        xOffset = -minX;
+    }
+    // Kiểm tra nếu tetromino nằm ngoài biên phải
+    else if (maxX >= gridWidth)
+    {
+        xOffset = gridWidth - 1 - maxX;
+    }
+
+    // Điều chỉnh toàn bộ tetromino để giữ nó trong biên
+    for (int i = 0; i < temp.size(); i++)
+    {
+        sf::Vector2i pos = temp[i].getPosition();
+        temp[i].setPosition(sf::Vector2i(pos.x + xOffset, pos.y));
+    }
+
+    // Bước 4: Kiểm tra và áp dụng xoay nếu hợp lệ
     if (IsRotationValid(temp, grid))
     {
+        // Xóa tetromino cũ
         for (int i = 0; i < minos.size(); i++)
         {
             sf::Vector2i p = minos[i].getPosition();
@@ -187,6 +222,8 @@ void Tetromino::Rotate(std::vector<std::vector<Color>> &grid)
                 grid[p.x][p.y] = Color::BLACK;
             }
         }
+
+        // Áp dụng xoay mới
         for (int i = 0; i < minos.size(); i++)
         {
             sf::Vector2i p = temp[i].getPosition();
@@ -198,6 +235,7 @@ void Tetromino::Rotate(std::vector<std::vector<Color>> &grid)
         }
     }
 }
+
 
 bool Tetromino::IsRotationValid(std::vector<Block> &temp, std::vector<std::vector<Color>> &grid)
 {
