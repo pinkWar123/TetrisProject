@@ -14,7 +14,7 @@
             "cppStandard": "gnu++17",
             "intelliSenseMode": "windows-gcc-x64",
             "compilerArgs": [],
-            "compilerPath": "D://software//winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5//mingw64/bin//g++.exe"
+            "compilerPath": "D:\\software\\winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5\\mingw64\\bin\\g++.exe"
         }
     ],
     "version": 4

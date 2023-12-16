@@ -4,7 +4,7 @@
 		{
 			"type": "cppbuild",
 			"label": "C/C++: g++.exe build active file",
-			"command": "D://software//winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5//mingw64/bin//g++.exe",
+			"command": "D:\\software\\winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5\\mingw64\\bin\\g++.exe",
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
@@ -37,7 +37,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "compiler: D://software//winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5//mingw64/bin//g++.exe"
+			"detail": "D:\\software\\winlibs-x86_64-posix-seh-gcc-13.1.0-mingw-w64msvcrt-11.0.0-r5\\mingw64\\bin\\g++.exe"
 		}
 	]
 }

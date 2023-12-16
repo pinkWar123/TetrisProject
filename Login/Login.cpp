@@ -126,7 +126,6 @@ void Login::CreateNewAccount()
 	json newObject;
 	newObject["Username"] = userName;
 	newObject["Password"] = passWord;
-	newObject["Favorite"] = json::array();
 	object["user"].push_back(newObject);
 
 	std::ofstream os("Login/user.json");
